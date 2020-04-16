@@ -12,23 +12,25 @@ import torch.utils.data as data
 
 
 class PascalVOC(data.Dataset):
-    num_classes = 20
-    default_resolution = [384, 384]
+    num_classes = 1
+    default_resolution = [512, 512]
     mean = np.array([0.485, 0.456, 0.406], dtype=np.float32).reshape(1, 1, 3)
     std = np.array([0.229, 0.224, 0.225], dtype=np.float32).reshape(1, 1, 3)
 
     def __init__(self, opt, split):
         super(PascalVOC, self).__init__()
         self.data_dir = os.path.join(opt.data_dir, 'voc')
+		self.data_dir = opt.data_dir
         self.img_dir = os.path.join(self.data_dir, 'images')
-        _ann_name = {'train': 'trainval0712', 'val': 'test2007'}
-        self.annot_path = os.path.join(self.data_dir, 'annotations', 'pascal_{}.json').format(_ann_name[split])
-        self.max_objs = 50
-        self.class_name = [
-            '__background__', "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow",
-            "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"
-        ]
-        self._valid_ids = np.arange(1, 21, dtype=np.int32)
+        _ann_name = {'train': 'mucai_train', 'val': 'mucai_val'}
+        self.annot_path = os.path.join('./', '{}.json').format(_ann_name[split])
+        self.max_objs = 150
+        # self.class_name = [
+        #     '__background__', "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow",
+        #     "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"
+        # ]
+        self.class_name=['__background__','mucai']
+        self._valid_ids = np.arange(0, 2, dtype=np.int32)
         self.cat_ids = {v: i for i, v in enumerate(self._valid_ids)}
         self._data_rng = np.random.RandomState(123)
         self._eig_val = np.array([0.2141788, 0.01817699, 0.00341571], dtype=np.float32)
