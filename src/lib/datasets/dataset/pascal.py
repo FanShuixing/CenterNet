@@ -19,8 +19,8 @@ class PascalVOC(data.Dataset):
 
     def __init__(self, opt, split):
         super(PascalVOC, self).__init__()
-        self.data_dir = os.path.join(opt.data_dir, 'voc')
-		self.data_dir = opt.data_dir
+        # self.data_dir = os.path.join(opt.data_dir, 'voc')
+        self.data_dir = opt.data_dir
         self.img_dir = os.path.join(self.data_dir, 'images')
         _ann_name = {'train': 'mucai_train', 'val': 'mucai_val'}
         self.annot_path = os.path.join('./', '{}.json').format(_ann_name[split])
